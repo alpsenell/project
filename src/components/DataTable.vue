@@ -21,7 +21,10 @@
         />
       </div>
     </div>
-    <div v-else>
+    <div
+      v-else
+      class="mt-6"
+    >
       <div class="flex pb-3 border-b">
         <div
           v-for="field in tableFields"
@@ -32,20 +35,17 @@
           {{ field.title }}
         </div>
       </div>
-      <div
+      <MovieRow
         v-for="item in data"
         :key="item.imdbID"
-        class="w-full flex"
-      >
-        <span class="w-1/4">{{ item.imdbID }}</span>
-        <span class="w-1/2">{{ item.Title }}</span>
-        <span class="w-1/4">{{ item.Year }}</span>
-      </div>
+        :movie="item"
+        @toggleFavourite="movie => $emit('toggleFavourite', movie)"
+      />
     </div>
     <div class="flex flex-col justify-center mt-4">
       <div>
         Showing {{ (page - 1) * perPage + 1 }} to
-        {{ page * perPage > total ? total : page * perPage }} of {{ total }} entries
+        {{ page * perPage > total ? total : page * perPage }} of {{ total }} movies.
       </div>
       <div class="mt-2">
         <button
@@ -70,6 +70,7 @@
 <script lang="ts" setup>
 import { defineProps, withDefaults } from 'vue';
 import TextInput from '../components/TextInput.vue';
+import MovieRow from '../components/MovieRow.vue';
 import { TableData, TableField } from '@/utils/types';
 
 interface Props {

@@ -12,18 +12,26 @@
       @nextPage="handleNextPage"
       @previousPage="handlePreviousPage"
       @search="handleSearch"
+      @toggleFavourite="onFavourite"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import axios from 'axios';
-import {reactive, ref} from 'vue';
+import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import DataTable from '../components/DataTable.vue';
-import { TableField } from '@/utils/types';
+import { storeToRefs } from 'pinia';
+import {TableData, TableField} from '@/utils/types';
 import { MovieState } from '@/utils/interfaces';
+import { useFavouriteStore } from '@/store/favouriteStore';
+import DataTable from '../components/DataTable.vue';
 
+// Store
+const favouriteStore = useFavouriteStore();
+const { favourites } = storeToRefs(favouriteStore);
+
+// Variables
 const isLoading = ref(false);
 const fields: Ref<TableField[]> = ref([
   {
@@ -79,7 +87,16 @@ function handlePreviousPage() {
 }
 
 function handleSearch(searchInput: string | number) {
+  if (movieState.page !== 1) {
+    movieState.page = 1;
+  }
+
   movieState.title = searchInput;
+  fetchMovieList();
+}
+
+function onFavourite(movie: TableData) {
+  favouriteStore.toggleFavourite(movie);
 }
 
 fetchMovieList();
