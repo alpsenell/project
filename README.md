@@ -1,10 +1,11 @@
 ## To run project;
 
-```
-npm install && npm run serve
-```
+````npm install && npm run serve````
 
 ### To run unit tests;
-```
-npm run test:unit
-```
+````npm run test:unit````
+
+## Building for production
+
+```npm run build```
+
