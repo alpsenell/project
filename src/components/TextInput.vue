@@ -35,7 +35,7 @@ interface Props {
 }
 
 const focusClass = ref('');
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   label: '',
   required: false,
   type: 'text',

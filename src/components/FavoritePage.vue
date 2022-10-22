@@ -19,7 +19,7 @@ import {TableField} from '@/utils/types';
 
 // Store
 const favouriteStore = useFavouriteStore();
-const { favourites, favouriteCount } = storeToRefs(favouriteStore);
+const { favourites } = storeToRefs(favouriteStore);
 
 const fields: Ref<TableField[]> = ref([
   {
@@ -39,7 +39,3 @@ const fields: Ref<TableField[]> = ref([
   },
 ]);
 </script>
-
-<style scoped>
-
-</style>

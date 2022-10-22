@@ -22,15 +22,13 @@
 import axios from 'axios';
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import {TableData, TableField} from '@/utils/types';
+import { TableData, TableField } from '@/utils/types';
 import { MovieState } from '@/utils/interfaces';
 import { useFavouriteStore } from '@/store/favouriteStore';
 import DataTable from '../components/DataTable.vue';
 
 // Store
 const favouriteStore = useFavouriteStore();
-const { favourites } = storeToRefs(favouriteStore);
 
 // Variables
 const isLoading = ref(false);
