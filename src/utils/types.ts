@@ -5,6 +5,6 @@ export type TableField = {
 
 export type TableData = {
     imdbID: string | number;
-    Title: string;
+    Title: string | number;
     Year: string | number;
 }

@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import MainPage from '../components/MainPage.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import MainPage from '../components/MainPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,11 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../components/FavoritePage.vue'),
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+});
 
-export default router
+export default router;
