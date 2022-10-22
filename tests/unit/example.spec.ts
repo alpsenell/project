@@ -1,12 +1,15 @@
 import { shallowMount } from '@vue/test-utils';
-import HelloWorld from '@/components/HelloWorld.vue';
+import TextInput from '@/components/TextInput.vue';
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message';
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
+describe('TextInput.vue', () => {
+  it('should be rendered', () => {
+    const wrapper = shallowMount(TextInput, {
+      props: {
+        value: 'new message',
+        id: 'new',
+        name: 'new',
+      },
     });
-    expect(wrapper.text()).toMatch(msg);
+    expect(wrapper.vm).toBeTruthy();
   });
 });

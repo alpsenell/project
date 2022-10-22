@@ -1,16 +1,24 @@
 <template>
   <div class="w-full">
     <div
-      v-if="!disableSearch"
-      class="w-60"
+      v-if="!disableSearch && !isLoading"
+      class="flex justify-start items-center"
     >
       <TextInput
         id="search"
+        class="w-60 bottom-2.5"
         name="search"
-        :value="searchedKeyword"
+        :value="titleSearchValue"
         label="Title"
-        @input.self="value => $emit('search', value)"
+        @input.self="onSearchTitle"
       />
+      <span class="ml-3 p-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
+          <img
+            src="../assets/icons/line-arrow-right.svg"
+            alt="search"
+            @click="$emit('search', titleSearchValue)"
+          >
+        </span>
     </div>
     <div
       v-if="isLoading"
@@ -51,7 +59,7 @@
       </div>
     </div>
     <div
-      v-if="!disablePagination"
+      v-if="!disablePagination && !isLoading"
       class="flex flex-col justify-center mt-7"
     >
       <div class="text-xs">
@@ -80,11 +88,19 @@
           name="Go to Page"
           label="Go to Page"
           type="number"
-          value=""
-          @input.self="value => $emit('goToPage', value)"
+          :value="goToPageValue"
+          @input.self="onGoToPageValueChange"
         />
+        <span class="ml-3 p-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
+          <img
+            src="../assets/icons/line-arrow-right.svg"
+            alt="search"
+            @keydown.enter="$emit('goToPage', goToPageValue)"
+            @click="$emit('goToPage', goToPageValue)"
+          >
+        </span>
         <span
-          class="cursor-pointer relative"
+          class="cursor-pointer relative ml-2"
           @mouseenter="showTooltip = true"
           @mouseleave="showTooltip = false"
         >
@@ -105,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineProps, ref, Ref, withDefaults} from 'vue';
+import { defineProps, ref, Ref, withDefaults } from 'vue';
 import TextInput from '../components/TextInput.vue';
 import MovieRow from '../components/MovieRow.vue';
 import { TableData, TableField } from '@/utils/types';
@@ -115,7 +131,7 @@ interface Props {
   data?: TableData[];
   isLoading: boolean;
   searchedKeyword?: string | number;
-  page?: number;
+  page?: number|string;
   total?: number;
   totalPage?: number;
   perPage?: number;
@@ -123,14 +139,32 @@ interface Props {
   disableSearch?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   tableFields: () => [],
   data: () => [],
   disablePagination: false,
   disableSearch: false,
+  totalPage: 1,
 });
 
 const showTooltip: Ref<boolean> = ref(false);
+const goToPageValue: Ref<number|string> = ref('');
+const titleSearchValue: Ref<number|string> = ref('');
+
+function onGoToPageValueChange(value: number|string) {
+  if (parseFloat(value as string) > props.totalPage) {
+    goToPageValue.value = props.totalPage;
+
+    return;
+  }
+
+  goToPageValue.value = value;
+}
+
+function onSearchTitle(value: string|number) {
+  titleSearchValue.value = value;
+}
+
 </script>
 
 <style scoped lang="scss">
