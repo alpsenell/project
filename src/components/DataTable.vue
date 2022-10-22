@@ -34,7 +34,7 @@
     </div>
     <div
       v-else
-      class="mt-6"
+      class="no-data | mt-6"
     >
       <div v-if="!data.length">
         No Data
