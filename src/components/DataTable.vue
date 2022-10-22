@@ -15,6 +15,7 @@
       <span class="ml-3 p-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
           <img
             src="../assets/icons/line-arrow-right.svg"
+            class="w-4 h-4"
             alt="search"
             @click="$emit('search', titleSearchValue)"
           >
@@ -95,6 +96,7 @@
           <img
             src="../assets/icons/line-arrow-right.svg"
             alt="search"
+            class="w-4 h-4"
             @keydown.enter="$emit('goToPage', goToPageValue)"
             @click="$emit('goToPage', goToPageValue)"
           >
