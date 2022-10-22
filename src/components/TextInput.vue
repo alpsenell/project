@@ -6,6 +6,7 @@
       :id="id"
       :required="required"
       :value="value"
+      :type="type"
       autocomplete="off"
       @focusin="onFocus(true)"
       @focusout="onFocus(false)"
@@ -27,6 +28,7 @@ import { defineProps, ref, withDefaults} from 'vue';
 interface Props {
   value: string | number;
   label?: string;
+  type?: string;
   name: string;
   id: string;
   required?: boolean;
@@ -36,9 +38,23 @@ const focusClass = ref('');
 const props = withDefaults(defineProps<Props>(), {
   label: '',
   required: false,
+  type: 'text',
 });
 
 function onFocus(state: boolean) {
   state ? focusClass.value = 'absolute top-0 block text-xs' : focusClass.value = '';
 }
 </script>
+
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance:textfield; /* Firefox */
+}
+</style>

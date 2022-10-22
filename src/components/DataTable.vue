@@ -1,6 +1,9 @@
 <template>
   <div class="w-full">
-    <div class="w-60">
+    <div
+      v-if="!disableSearch"
+      class="w-60"
+    >
       <TextInput
         id="search"
         name="search"
@@ -25,50 +28,84 @@
       v-else
       class="mt-6"
     >
-      <div class="flex pb-3 border-b">
-        <div
-          v-for="field in tableFields"
-          :key="field.title"
-          class="font-bold"
-          :class="field.width"
-        >
-          {{ field.title }}
-        </div>
+      <div v-if="!data.length">
+        No Data
       </div>
-      <MovieRow
-        v-for="item in data"
-        :key="item.imdbID"
-        :movie="item"
-        @toggleFavourite="movie => $emit('toggleFavourite', movie)"
-      />
+      <div v-else>
+        <div class="flex pb-3 border-b">
+          <div
+            v-for="field in tableFields"
+            :key="field.title"
+            class="font-bold"
+            :class="field.width"
+          >
+            {{ field.title }}
+          </div>
+        </div>
+        <MovieRow
+          v-for="item in data"
+          :key="item.imdbID"
+          :movie="item"
+          @toggleFavourite="movie => $emit('toggleFavourite', movie)"
+        />
+      </div>
     </div>
-    <div class="flex flex-col justify-center mt-4">
-      <div>
+    <div
+      v-if="!disablePagination"
+      class="flex flex-col justify-center mt-7"
+    >
+      <div class="text-xs">
         Showing {{ (page - 1) * perPage + 1 }} to
         {{ page * perPage > total ? total : page * perPage }} of {{ total }} movies.
       </div>
-      <div class="mt-2">
+      <div class="text-xs">Current page: {{ page }}</div>
+      <div class="mt-4 flex justify-center items-center">
         <button
-          class="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
+          class="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="page === 1"
           @click="$emit('previousPage')"
         >
           Previous
         </button>
         <button
-          class="ml-3 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
+          class="ml-3 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="page === totalPage"
           @click="$emit('nextPage')"
         >
           Next
         </button>
+        <TextInput
+          id="goToPage"
+          class="inline-block w-40 ml-4 bottom-2.5"
+          name="Go to Page"
+          label="Go to Page"
+          type="number"
+          value=""
+          @input.self="value => $emit('goToPage', value)"
+        />
+        <span
+          class="cursor-pointer relative"
+          @mouseenter="showTooltip = true"
+          @mouseleave="showTooltip = false"
+        >
+          <img
+            src="../assets/icons/info-circle.svg"
+            alt="information"
+          >
+          <div
+            v-if="showTooltip"
+            class="absolute bg-white border border-gray-300 rounded-md shadow-md p-2 text-sm w-max"
+          >
+            Minimum page number is 1 and maximum is {{ totalPage }}
+          </div>
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, withDefaults } from 'vue';
+import {defineProps, ref, Ref, withDefaults} from 'vue';
 import TextInput from '../components/TextInput.vue';
 import MovieRow from '../components/MovieRow.vue';
 import { TableData, TableField } from '@/utils/types';
@@ -77,18 +114,23 @@ interface Props {
   tableFields?: TableField[];
   data?: TableData[];
   isLoading: boolean;
-  searchedKeyword: string | number;
-  page: number;
-  total: number;
-  totalPage: number;
-  perPage: number;
+  searchedKeyword?: string | number;
+  page?: number;
+  total?: number;
+  totalPage?: number;
+  perPage?: number;
+  disablePagination?: boolean;
+  disableSearch?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   tableFields: () => [],
   data: () => [],
+  disablePagination: false,
+  disableSearch: false,
 });
 
+const showTooltip: Ref<boolean> = ref(false);
 </script>
 
 <style scoped lang="scss">

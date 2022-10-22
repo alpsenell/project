@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="my-5">
     <router-link to="/">Home</router-link> |
     <router-link to="/favourites">Favourites</router-link>
   </nav>
@@ -16,14 +16,13 @@
 }
 
 nav {
-  padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
 
     &.router-link-exact-active {
       color: #42b983;
+      text-decoration: underline;
     }
   }
 }

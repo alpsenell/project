@@ -13,6 +13,7 @@
       @previousPage="handlePreviousPage"
       @search="handleSearch"
       @toggleFavourite="onFavourite"
+      @goToPage="onGoToPage"
     />
   </div>
 </template>
@@ -97,6 +98,11 @@ function handleSearch(searchInput: string | number) {
 
 function onFavourite(movie: TableData) {
   favouriteStore.toggleFavourite(movie);
+}
+
+function onGoToPage(page: number) {
+  movieState.page = page;
+  fetchMovieList();
 }
 
 fetchMovieList();

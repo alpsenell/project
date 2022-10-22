@@ -25,7 +25,7 @@
 import {computed, defineProps, defineEmits, ref, Ref, PropType } from 'vue';
 import { TableData } from '@/utils/types';
 import { useFavouriteStore } from '@/store/favouriteStore';
-import {storeToRefs} from 'pinia';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps( {
   movie: {
